@@ -30,6 +30,7 @@ AdelieCorTest <- function(AdelieOnly) {
   cor.test(AdelieOnly$body_mass_g, AdelieOnly$flipper_length_mm)
 }
 
+
 ChinstrapCorFig <- function(ChinstrapOnly) {
   ggscatter(ChinstrapOnly, x = 'body_mass_g',
             y = 'flipper_length_mm',
@@ -53,8 +54,9 @@ PenguinsCorFig <- function(penguins_clean) {
     labs(title = 'Correlation coeffiecint for Chinstrap Penguins')
 }
 
-PenguinsCorTest <- function(penguins_clean)
-{cor.test(penguins_clean$body_mass_g, penguins_clean$flipper_length_mm)}
+PenguinsCorTest <- function(penguins_clean) {
+  cor.test(penguins_clean$body_mass_g, penguins_clean$flipper_length_mm)
+  }
 
 
 

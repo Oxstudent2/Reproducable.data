@@ -1,1 +1,225 @@
+---
+title: "reproducability assigmnet"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+date: "2023-11-16"
+---
+
+title: "Reproducability assignment"
+output: html_document
+date: "2023-11-15"
+---
+
+# Loading and installing packages
+```{r, message=FALSE, warning=FALSE, results='hide'}
+options(repos = list(CRAN="http://cran.rstudio.com/"))
+install.packages("ggplot2")
+install.packages("palmerpenguins")
+install.packages("janitor")
+install.packages("dplyr")
+install.packages("ggpubr")
+install.packages("tinytex")
+install.packages('ragg')
+install.packages("svglite")
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(palmerpenguins)
+library(janitor)
+library(dplyr)
+library(ggpubr)
+library(ragg)
+library(svglite)
+```
+
+## Introduction
+
+```{r, echo=FALSE, comment=NA}
+print('In this asisgnment I am testing if there is a significant positive corrleation between the body mass of penguins and their flipper length, both within individual species and for the whole palmer group as a whole')
+```
+
+```{r, echo=FALSE, comment=NA}
+print('Below I am loading and claning the data')
+```
+
+```{r}
+write.csv(penguins_raw, "data/penguins_raw.csv")
+penguins_raw <- read.csv("data/penguins_raw.csv")
+```
+
+```{r}
+source("NewFunctions/CleaningPenguins.R")
+penguins_clean <- penguins_raw %>%
+  clean_function%>%
+    clean_column_names() %>%
+    shorten_species() %>%
+    remove_empty_columns_rows()%>%
+   remove_NA()
+```
+
+```{r, echo=FALSE, comment=NA}
+print('Below I am creating small data sets for each of the species for individual comparisons later')
+```
+
+```{r}
+ AdelieOnly <- FilterAdeli(penguins_clean)
+GentooOnly <- FilterGentoo(penguins_clean)
+ChinstrapOnly <- FilterChinstrap(penguins_clean)
+```
+
+# Hypothesis
+
+```{r, echo=FALSE, comment=NA}
+print('This is the code for the exploratory figure, CompFigAll being the comparison graph that shows all species on one graph, and CompFig being the comparison graph for each species seperately')
+```
+
+```{r, warning=FALSE, message=FALSE, comment=NA, results='hide'}
+source("PlottingAssignment/AssignmentPlotting.R")
+CompFig <- plot_comp_data(penguins_clean)
+CompFigAll <- plot_comp_data_all(penguins_clean)
+  
+save_penguin_plot_png(CompFig)
+save_penguin_plot_svg(CompFig)
+save_penguin2_plot_png(CompFigAll)
+save_penguin2_plot_svg(CompFigAll)
+
+CompFig
+CompFigAll
+```
+
+```{r, echo=FALSE, comment=NA}
+print('Based on the exploratory figures, we can see the general trend that an increase in body mass leads to an increase in flipper length, and that males tend to be larger than females within species.  
+
+      Based on this I could use a correlation test to see if these visual trends are valid by performing a correlation test, to see if there is a significant positive correlation. 
+     I hypothesise That there will be a significant positive correlation between body mass and flipper length both within individual species and across the entire data set as a whole, as the lines seen in the exploratory figure are relativly steep and positive  ')
+```
+
+
+```{r, echo=FALSE, comment=NA}
+print('before I run any statistical tests, I am going to check the data is normally distrobuted for each species by checing some histograms for the distrobution of body size across the penguins')  
+
+print('This is so I can determine what statistical tests I will need to run and if i need to make any changes to the data before running statistical tests')
+```
+
+
+```{r, message=FALSE, echo=FALSE}
+source("PlottingAssignment/AssignmentPlotting.R")
+normal_plot_check(penguins_clean)
+```
+
+```{r,echo=FALSE, comment=NA}
+print('These histograms are normally distrobuted, so I wont be making any adjustments to the data or performing a special test for non normally distrobuted data')
+```
+# Why a correlation test?
+
+```{r, echo=FALSE, comment=NA}
+print('I am going to run a correlation test and create a figure featuring the results of the corrleation test on the species and the overall penguins.  
+      I am using a correlation test becuase I am trying to determine if there is a correlation between these 2 variables, and the correlation coefficient will determine the strength of the relationship, and if this relationship is significant.  
+      Hence the correlation coeficcient will allow me to detemrine if the observed correlations in the exploratory figure are significnat, and that there is a positive relationsbhip between body mass and flipper length')
+
+```
+
+```{r, warning=FALSE, comment=NA, results='hide'}
+print('Here I am greating figures and saving them in the assigmnet figures file to observe later and also seen in the Rmd file')
+
+source("NewFunctions/AssignmentStatsFunctions.R")
+GentooFigure <- GentooCorFig(GentooOnly)
+AdelieFigure <- AdelieCorFig(AdelieOnly)
+ChinstrapFigure<- ChinstrapCorFig(ChinstrapOnly)
+AllSpeciesFigure <- PenguinsCorFig(penguins_clean)
+
+
+save_gentoo_plot_png(GentooFigure)
+  save_gentoo_plot_svg(GentooFigure)
+save_adelie_plot_png(AdelieFigure)
+  save_adelie_plot_svg(AdelieFigure)
+save_chinstrap_plot_png(ChinstrapFigure)
+save_chinstrap_plot_svg(ChinstrapFigure)
+save_all_species_plot_png(AllSpeciesPlot)
+    save_all_species_plot_svg(AllSpeciesPlot)
+    
+```
+
+# Correlation test results for Adelie penguins
+```{r, warning=FALSE,comment=NA}
+source("NewFunctions/AssignmentStatsFunctions.R")
+  AdelieCorFig(AdelieOnly)%>%
+save_adelie_plot_png( AdelieFig)%>%
+  save_adelie_plot_svg( AdelieFig)
+  
+  AdelieFigure
+  AdelieCorTest(AdelieOnly)
+```
+
+# correlation test results for Chinstrap penguins
+```{r,warning=FALSE, comment=NA}
+source("NewFunctions/AssignmentStatsFunctions.R")
+   ChinstrapCorFig(ChinstrapOnly)%>%
+   save_chinstrap_plot_png(ChinstrapFigure)%>%
+  save_chinstrap_plot_svg(ChinstrapFigure)
+   
+ChinstrapFigure 
+ChinstrapCorTest(ChinstrapOnly)
+```
+# correlation test for gentoo penguins
+
+```{r, warning=FALSE, comment=NA}
+source("NewFunctions/AssignmentStatsFunctions.R")
+GentooCorFig(GentooOnly)%>%
+save_gentoo_plot_png(GentooFigure)%>%
+  save_gentoo_plot_svg(GentooFigure)
+GentooCorTest(GentooOnly)
+
+GentooFigure
+```
+
+
+# Correlation test results for all the penguin species
+```{r, warning=FALSE, comment=NA, results='hide'}
+source("NewFunctions/AssignmentStatsFunctions.R")
+  save_all_species_plot_png(AllSpeciesPlot)
+  save_all_species_plot_svg(AllSpeciesPlot)
+
+  PenguinsCorTest(penguins_clean)
+  AllSpeciesFigure
+```
+
+# Discussion
+
+Gentoo penguins
+```{r, echo=FALSE, comment=NA}
+print('The R value is 0.71, demonstrating a strog positive correlation, and this result is significant with 95% certainty as the p value output is 2.2e-16, significantly smaller than the significant P value of 0.005.  
+      Therefore we can conclude there is a significant positive correlation between body mass and flipper length')
+```
+
+Adelie Penguins
+```{r, echo=FALSE, comment=NA}
+print('The slope of this line is not as postive as the Gentoo line, however the output of the correlation test has an R value of 0.46, which demonstrates a positive correlation but not a super stong one. however, the P value is 3.402e-09, again below 0.05, so we can say with confidence there is a positive correlation between body mass and flipper length in adelie penguins')
+```
+
+Chinstrap penguins 
+```{r, echo=FALSE, comment=NA}
+print('Again Chinstrap penguins show a positive correlation, with an R value of 0.64 indicating a relativly strong positive correlation, and this correlation is significant as the P value is 3.748e-09, again significnatly lower than the 0.05 positive correlation value, showing there is a significant positive correlation between body mass and flipper length in Chin strap penguins')
+```
+
+All oenguins
+```{r, echo=FALSE, comment=NA}
+print('The whole data set of the penguins shows a very string significant correlation, with a R coefficient of 0.87, and a p value of 2.2e-16, significnatly less than the significant 0.05 value. This reflects the trends for the individual species, that as body mass increases, flipper length increases.\
+      If you where looking at just this data set, it would be msileading for the inflcuence between species, hence I split each species up into a group')
+```
+
+# Conclusions
+
+```{r,echo=FALSE, comment=NA}
+print('As we can see, for all species there is a significant positive correlation between body mass and fipper length, as such as body mass increases, the flipper length also increases.\
+      One potential explanation fo rthis is that increased body mass suggests greater body size, and with increased size, all limbs and body apendages would also increase. Non of the relationships are perfectly linear (R=1), however they show significant positive correlations')
+
+print('furthermore, greater body mass would requier greater prepulsion, which would be achived by increasing the surface area and general size of the flipper, so the larger penguin can effectivly traverse its environment. ')
+
+print('This helps explain the positive significant positive correlation seen across and within species')
+```
 

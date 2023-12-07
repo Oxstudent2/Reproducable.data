@@ -24,6 +24,16 @@ library(ggpubr)
 library(ragg)
 library(svglite)
 ```
+```{r, results='hide', message=FALSE}
+setwd(getwd())
+
+Figuresfolder <- "AssignmentsFigures"
+Functionsfolder <- "NewsFunctions"
+PlottingFolder <- "PlottingAssignment"
+dir.create(Figuresfolder)
+dir.create(Functionsfolder)
+dir.create(PlottingFolder)
+```
 
 In this asisgnment I am testing if there is a significant positive corrleation between the body mass of penguins and their flipper length, both within individual species and for the whole palmer group as a whole
 

@@ -6,7 +6,7 @@ To access the code, open ReproducabilityCode.rmd
 
 The following folders are created automatically in the code:
 
-- AssignmentFigures <- does not need any data loaded into it, is just the folder for images to be saved to
+- AssignmentFigures <- do not need to load data into, is just the folder for images to be saved to
 - PlottingAssignment
 - NewFunctions
 

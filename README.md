@@ -2,9 +2,9 @@
 
 This reporsitory contains folders with functions for use in the rmd
 
-To access the code, open 
+To access the code, open ReproducabilityCode.rmd
 
-The following folders created in the code:
+The following folders are created automatically in the code:
 
 - AssignmentFigures
 - PlottingAssignment

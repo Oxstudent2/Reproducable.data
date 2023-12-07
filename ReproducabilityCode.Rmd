@@ -27,8 +27,8 @@ library(svglite)
 ```{r, results='hide', message=FALSE}
 setwd(getwd())
 
-Figuresfolder <- "AssignmentsFigures"
-Functionsfolder <- "NewsFunctions"
+Figuresfolder <- "AssignmentFigures"
+Functionsfolder <- "NewFunctions"
 PlottingFolder <- "PlottingAssignment"
 dir.create(Figuresfolder)
 dir.create(Functionsfolder)

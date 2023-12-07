@@ -1,6 +1,9 @@
 # Reproducable.data
 
 This reporsitory contains folders with functions for use in the rmd
+
+To access the code, open 
+
 The following folders created in the code:
 
 - AssignmentFigures

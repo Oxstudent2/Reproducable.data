@@ -1,6 +1,7 @@
 # Reproducable.data
 
-The code to run for is ReproducabilityCode. To run this code effectively, ensure the following folders are created on your computer:
+The code to run is ReproducabilityCode. To run this code effectively, ensure the following folders are created on your computer within a general assignment function:
+
 - AssignmentFunctions
 - NewFunctions
 - PlottingAssignment
